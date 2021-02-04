@@ -7,7 +7,7 @@
 		<div class="col-md-5 mx-auto mt-5">
 			<div class="card card text-white bg-dark mb-3">
 				<div class="card-body">
-					<h1 align="center">Inserta Datos</h1>
+					<h1 align="center">Inserta Nueva Estacion</h1>
 					<form action="Estacion-Linea-Insertar2.php" method="POST">
 						<div>
 							<label>Indice:</label>

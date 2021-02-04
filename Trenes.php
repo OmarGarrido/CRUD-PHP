@@ -1,7 +1,7 @@
 <?
 $conexion=@mysql_connect("localhost","root","12345678");
 $db_name="metro";
-$tabla="ESTACION";
+$tabla="trenes";
 $hide;
 
 if(!$conexion){
@@ -15,13 +15,13 @@ if(!$conexion){
 	?>
 <html>
 	<head>
-		<title>Estaciones</title>
+		<title>Estaciones de Lineas</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
-			<img class="navbar-brand" style="width: 60px; margin-left: 8px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Metro_de_la_Ciudad_de_México_logo.svg/1019px-Metro_de_la_Ciudad_de_México_logo.svg.png">
+			<img class="navbar-brand" style="width: 60px; margin-left: 8px; " src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Metro_de_la_Ciudad_de_México_logo.svg/1019px-Metro_de_la_Ciudad_de_México_logo.svg.png">
 		<ul class="navbar-nav me-auto">
       <li class="nav-item">
           <a class="nav-link active" href="Linea.php">Lineas</a>
@@ -44,7 +44,8 @@ if(!$conexion){
           </li>
     </ul>
 		</div>	
-		<form name="buscar" method="post" action="Estaciones.php" class="d-flex">
+
+		<form name="buscar" method="post" action="Trenes.php" class="d-flex">
 			<select name="campo">
 				<?
 				$resultado=mysql_query("show fields from ".$tabla,$conexion);
@@ -56,15 +57,14 @@ if(!$conexion){
 				?>
 			</select>
 
-	        <input class="form-control me-2" type="search" placeholder="Search" name="palabra">
-	        <button class="btn btn-outline-success" type="submit" name="enviar">Search</button>
+	        <input class="form-control me-2" type="search" placeholder="Buscar" name="palabra">
+	        <button class="btn btn-outline-success" type="submit" name="enviar">Buscar</button>
       	</form>
-		</nav>
 
+		</nav>
 		<div class="mt-3" align="center">
-			<a class="btn btn-success" href="Estaciones-insertar.php">Agregar Estacion</a></button>
+			<a class="btn btn-success" href="Trenes-insertar.php">Agregar</a></button>
 		</div>
-		
 	</body>
 </html>
 
@@ -78,11 +78,13 @@ if($hide==false){
 ?>
 <html>
 	<body>
-		<table class="table table-dark table-striped table-hover mt-3" style="text-align: center; width: 800px; text-transform: capitalize;" align="center">
+		<table id="texto" class="table table-dark table-striped table-hover mt-3" style="text-align: center; width: 800px; text-transform: capitalize;" align="center">
 			<thead>
 				<tr>
-				<th>ID Estacion</th>
-				<th>Nombre Estacion</th>
+				<th>ID Tren</th>
+				<th>Modelo</th>
+				<th>Linea</th>
+				<th>Cochera</th>
 				<th>Operaciones</th>
 			</tr>
 			</thead>
@@ -92,6 +94,8 @@ if($hide==false){
 						echo "<tr>";
 						echo "<td>".$row[0]."</td>";
 						echo "<td>".$row[1]."</td>";
+						echo "<td>".$row[2]."</td>";
+						echo "<td>".$row[3]."</td>";
 						echo "<td>";
 						echo "<a class='mx-2 btn btn-danger ml-5' href=".$_SERVER['PHP_SELF']."?borrar=".$row[0].">Borrar</a>";
 						echo "<a class='mx-2 btn btn-primary ml-5' href=".$_SERVER['PHP_SELF']."?cambiar=".$row[0].">Editar</a>";
@@ -103,6 +107,7 @@ if($hide==false){
 		</table>
 	</body>
 </html>
+
 <?
 }
 }
@@ -116,7 +121,7 @@ $id=$_GET['borrar'];
     	<body>
 		<?
 		
-		$sql="DELETE FROM ".$tabla." WHERE ID_ESTACION = '".$id."'";
+		$sql="DELETE FROM ".$tabla." WHERE ID_TREN = '".$id."'";
 
 		
 		if(@mysql_query($sql)){
@@ -128,7 +133,7 @@ $id=$_GET['borrar'];
 			echo "<p>Error al eliminar el elemento.</p>";
 		}
 		mysql_close($conexion);
-		echo "<script>alert('Registro Eliminado');window.location='Estaciones.php';</script>";
+		echo "<script>alert('Registro Eliminado');window.location='Trenes.php';</script>";
 	}
   ?>
 
@@ -137,7 +142,7 @@ if (empty($_GET['cambiar'])==false)
 {
 $id=$_GET['cambiar'];
 
-		$sql = "SELECT * FROM ".$tabla." WHERE ID_ESTACION='".$id."'";
+		$sql = "SELECT * FROM ".$tabla." WHERE ID_TREN ='".$id."'";
 		$registro = @mysql_query($sql);
 	if(!$registro){
 		echo "Error ".mysql_errno();
@@ -159,14 +164,18 @@ $id=$_GET['cambiar'];
 			<div class="card card text-white bg-dark mb-3">
 				<div class="card-body">
 					<h1 align="center">Inserta Datos</h1>
-					<form action="<?php echo $_SERVER['PHP_self'];?>" method="post" name="Estaciones.php">
+					<form action="<?php echo $_SERVER['PHP_self'];?>" method="post" name="Trenes.php">
 					<p>
-					<input  type="hidden" align="LEFT" name="ID_ESTACION" value="<?php echo $registro['ID_ESTACION'];?>" /><p>
-					<p>NOMBRE:
-					<input class="form-control mt-2" type="text" align="LEFT" name="NOM_ESTACION" value="<?php echo $registro['NOM_ESTACION'];?>"/><p>
+					<input  type="hidden" align="LEFT" name="ID" value="<?php echo $registro['ID_TREN'];?>" /><p>
+					<p>MODELO:
+					<input class="form-control mt-2" type="text" align="LEFT" name="MODELO" value="<?php echo $registro['MODELO'];?>"/><p>
+					<p>ID LINEA:
+					<input class="form-control mt-2" type="text" align="LEFT" name="LINEA" value="<?php echo $registro['ID_LINEA2'];?>"/><p>
+					<p>ID COCHERA:
+					<input class="form-control mt-2" type="text" align="LEFT" name="COCHERA" value="<?php echo $registro['ID_COCHERA2'];?>"/><p>
 					
 					<input class="btn btn-success form-control mt-3" type="submit" value="Actualizar" name="actualizar">
-					<a class="btn btn-danger form-control mt-3" href="Estaciones.php">Atras</a>
+					<a class="btn btn-danger form-control mt-3" href="Trenes.php">Atras</a>
 					</form>
 				</div>
 			</div>
@@ -177,22 +186,25 @@ $id=$_GET['cambiar'];
 
   <?PHP
 
+
 if($_POST){
 	ECHO '<html>
     	<head><title>Resultado de UPDATE</title></head>
     	<body>';
 
  	
-$subs_nombre = utf8_decode($_POST['NOM_ESTACION']);
+$subs_modelo = utf8_decode($_POST['MODELO']);
+$subs_linea = utf8_decode($_POST['LINEA']);
+$subs_cochera = utf8_decode($_POST['COCHERA']);
 
 
 		$sql="UPDATE ".$tabla." SET
-		NOM_ESTACION='$subs_nombre'
-		WHERE ID_ESTACION='".$id."'";
+		MODELO='$subs_modelo',ID_LINEA2='$subs_linea',ID_COCHERA2='$subs_cochera'
+		WHERE ID_TREN='".$id."'";
 		
 
 		if(@mysql_query($sql)){
-			echo '<script>alert("Registro Actualizado.");window.location="Estaciones.php";</script>';
+			echo '<script>alert("Registro Actualizado.");window.location="Trenes.php";</script>';
 		}
 		else{
 			echo "<p>Error al actualizar el registro.</p>";
@@ -208,9 +220,9 @@ mysql_close($conexion);
 }
   ?>
 
-    <?
+  <?
 if (isset($_POST['enviar'])) {
-	$query ="SELECT * from ".$tabla." WHERE {$_POST['campo']} LIKE '%{$_POST['palabra']}'";
+	$query ="SELECT ID_TREN,MODELO,NOM_LINEA,NOM_COCHERA from ".$tabla." INNER JOIN LINEA ON ID_LINEA=ID_LINEA2 INNER JOIN COCHERA ON ID_COCHERA2=ID_COCHERA WHERE {$_POST['campo']} LIKE '%{$_POST['palabra']}%'";
 	$resultado=mysql_query($query,$conexion);
 
 ?>
@@ -232,13 +244,15 @@ if (isset($_POST['enviar'])) {
 		</div>	
 		</nav>
 		<div class="mt-3" align="center">
-			<a class="btn btn-danger" href="Estaciones.php">Regresar</a></button>
+			<a class="btn btn-danger" href="Trenes.php">Regresar</a></button>
 		</div>
 		<table id="texto" class="table table-dark table-striped table-hover mt-3" style="text-align: center; width: 800px; text-transform: capitalize;" align="center">
 			<thead>
 				<tr>
-				<th>ID Linea</th>
-				<th>Nombre</th>
+				<th>ID Tren</th>
+				<th>Modelo</th>
+				<th>Linea</th>
+				<th>Cochera</th>
 				<th>Operaciones</th>
 			</tr>
 			</thead>
@@ -255,6 +269,8 @@ if (isset($_POST['enviar'])) {
 						echo "<tr>";
 						echo "<td>".$row[0]."</td>";
 						echo "<td>".$row[1]."</td>";
+						echo "<td>".$row[2]."</td>";
+						echo "<td>".$row[3]."</td>";
 						echo "<td>";
 						echo "<a class='mx-2 btn btn-danger ml-5' href=".$_SERVER['PHP_SELF']."?borrar=".$row[0].">Borrar</a>";
 						echo "<a class='mx-2 btn btn-primary ml-5' href=".$_SERVER['PHP_SELF']."?cambiar=".$row[0].">Editar</a>";

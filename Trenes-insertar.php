@@ -20,15 +20,23 @@
 		<div class="col-md-5 mx-auto mt-5">
 			<div class="card card text-white bg-dark mb-3">
 				<div class="card-body">
-					<h1 align="center">Inserta Nueva Liena</h1>
-					<form action="Linea-insertar2.php" method="POST">
+					<h1 align="center">Inserta Nuevo Tren</h1>
+					<form action="Trenes-insertar2.php" method="POST">
 						<div>
-							<label>ID Linea:</label>
+							<label>ID Tren:</label>
 							<input class="form-control form-input" type="text" align="LEFT" name="ID"/>
 						</div>
 						<div class="mt-3">
-							<label>Nombre:</label>
-							<input class="form-control form-input" type="text" align="LEFT" name="Nombre"/>
+							<label>Modelo:</label>
+							<input class="form-control form-input" type="text" align="LEFT" name="Modelo"/>
+						</div>
+						<div class="mt-3">
+							<label>ID Linea:</label>
+							<input class="form-control form-input" type="text" align="LEFT" name="Linea"/>
+						</div>
+						<div class="mt-3">
+							<label>ID Cochera:</label>
+							<input class="form-control form-input" type="text" align="LEFT" name="Cochera"/>
 						</div>
 							<input class="btn btn-success mt-5 form-control" type="submit" value="Insertar" name="insertar">
 							<a class="btn btn-danger mt-3 form-control" href="Linea.php">Cancelar</a>
