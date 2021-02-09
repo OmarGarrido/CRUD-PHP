@@ -17,7 +17,7 @@ $subs_nombre =utf8_decode($_POST['Nombre']);
 $subs_estacion =utf8_decode($_POST['Estacion']);
 
 
-  $insert_value ='INSERT INTO `' . $db_name . '`.`'.$db_table_name.'` (`ID_ACCESO`, `NOM_ACCESO`, `ID_ESTACION3`) VALUES ("' . $subs_id . '", "' . $subs_nombre . '"'.$subs_estacion.'")';                       
+  $insert_value ='INSERT INTO `' . $db_name . '`.`'.$db_table_name.'` (`ID_ACCESO`, `NOM_ACCESO`, `ID_ESTACION3`) VALUES ("' . $subs_id . '", "' . $subs_nombre . '","'.$subs_estacion.'")';                       
 
 
 mysql_select_db($db_name, $db_connection);
